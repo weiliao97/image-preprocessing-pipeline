@@ -25,6 +25,7 @@ matplotlib.rcParams["figure.dpi"] = 300
 
 # set up data directory
 folder_names = ['/content/drive/My Drive/patient sample/01272023_p868_D3/Plate001.nd2']
+# settings for the filtering
 filter_size = [30] # originall 60
 disk_size = [3]
 threshold_ratio = [1]
@@ -50,13 +51,16 @@ x_phase = []
 
 with ND2Reader(folder_names[treatment]) as images:
     images.bundle_axes = 'yx'
+    # v is the axis for the FOV change
     images.iter_axes = 'v'
+    # get phase channel first
     images.default_coords['c'] = 0
     x_phase = []
     for i in range(100):
         a = images[i]
         x_phase.append(a)
 
+    # get fluor channel
     images.default_coords['c'] = 1
     x_fluor = []
     for i in range(100):
@@ -66,7 +70,7 @@ with ND2Reader(folder_names[treatment]) as images:
 x_phase = np.stack(x_phase, axis=0)
 x_fluor = np.stack(x_fluor, axis=0)
 
-# generate correction phase and fluor images
+# generate correction phase and fluor images using median filter
 avg_p = np.average(x_phase, axis=0)
 avg_p1 = avg_p.astype("uint16")
 img_pf = median(avg_p1, disk(600))
@@ -76,12 +80,14 @@ avg_f = np.average(x_fluor, axis=0)
 img_ff = skimage.filters.median(avg_f, disk(filter_size[treatment]))
 data_fW = np.divide(x_fluor.astype(np.float64), img_ff)
 
+# plot the images
 plt.imshow(img_ff)
 plt.figure()
 plt.imshow(img_pf)
 # print(np.amax(img_ff), np.amin(img_ff))
 
 length = len(data_fW)
+# save the cropped images, both corrected and original
 crop_totalf = []
 crop_totalp = []
 crop_totalf_or = []
@@ -134,6 +140,7 @@ for i in range(int(length)):
         # show the output image
     # plt.figure()
     # plt.imshow(img_p8)
+    # cells are completely in the image
     centers = centers[centers[:, 1] >= 30]
     centers = centers[centers[:, 1] <= 1009]
     centers = centers[centers[:, 0] >= 30]
@@ -187,8 +194,10 @@ crop_totalp_or = np.concatenate(crop_totalp_or, axis=0)
 crop_totalf_or = np.concatenate(crop_totalf_or, axis=0)
 
 imgcount = crop_totalf.shape[0]
+# if removed, save the reason for removal
 skipped = []
 skipped_info = []
+# save phase channel and ros channel infomation for each cropped image
 ros_mean_t = []
 ros_back_mean_t = []
 phase_mean_t = []
@@ -217,7 +226,7 @@ area_t = []
 circularity = []
 empty_t = []
 
-# perform segmentation and compute mean intensity
+# perform segmentation using watershed algorithm and compute mean intensity
 for index in range(imgcount):
     phase_slice = crop_totalp[index, :, :]
     gradient_16_th = threshold_sauvola(phase_slice, window_size=25, k=0.01)
@@ -280,6 +289,7 @@ for index in range(imgcount):
 
     # labels = watershed(-distance, markers, mask=gradient_16_fill)
     # plt.imshow(labels)
+    # save pixel count for each label
     pixel_count = []
     for label in np.unique(labels):
         # if this is the background label, ignore it
