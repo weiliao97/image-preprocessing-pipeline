@@ -87,6 +87,7 @@ crop_totalp = []
 crop_totalf_or = []
 crop_totalp_or = []
 
+# iterate through each image and crop
 for i in range(int(length)):
 
     mid_slice = data_fW[i, :, :]
@@ -216,7 +217,7 @@ area_t = []
 circularity = []
 empty_t = []
 
-# perform segmenation and compute mean intensity
+# perform segmentation and compute mean intensity
 for index in range(imgcount):
     phase_slice = crop_totalp[index, :, :]
     gradient_16_th = threshold_sauvola(phase_slice, window_size=25, k=0.01)
@@ -334,6 +335,7 @@ for index in range(imgcount):
     phase_mean = cv2.mean(phase_slice, mask)
     phase_back_mean = cv2.mean(phase_slice, mask_back)
 
+    # remove a few outliers
     if ros_back_mean[0] == 0:
         skipped.append(index)
         skipped_info.append(sum(pixel_count))
