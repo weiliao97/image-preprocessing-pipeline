@@ -5,6 +5,10 @@ Multichannel fluorecent images were acquired by a Nikon Eclipse Ti microscope us
 - Phase: 50 ms. 3.5V, FITC : 200 ms 
 - Capture 10x10 field using ND acquisition 
 
+The experiemental pipeline is as follows: 
+![Exp](/images/exp_pipeline.png "Exp")
+
+
 The pipeline here read the ND file and perform 
 - Illumination correction
 - Single cell detection (using opencv)
