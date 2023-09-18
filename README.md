@@ -6,7 +6,7 @@ Multichannel fluorecent images were acquired by a Nikon Eclipse Ti microscope us
 - Capture 10x10 field using ND acquisition 
 
 The experiemental pipeline is as follows: 
-![Exp](/images/exp_pipeline.png "Exp")
+![Exp](/images/exp_steps.png "Exp")
 
 
 The pipeline here read the ND file and perform 
