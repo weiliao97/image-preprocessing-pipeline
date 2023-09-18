@@ -35,3 +35,4 @@ Segmentation mask was created using watershed algorithm. Here are some examples.
 
 ## Step 4. ROS quantificaiton 
 The mask will be used to calculate the average FITC intensity in the cell region (corrected by the intensity in the backgroud region), which is our ROS label. 
+![ROS](/images/Figure 2021-03-31 080234.png "ROS")
