@@ -8,7 +8,7 @@ Multichannel fluorecent images were acquired by a Nikon Eclipse Ti microscope us
 The pipeline here read the ND file and perform 
 - Illumination correction
 - Single cell detection (using opencv)
-- Watershed to extract foreground ana background 
+- Watershed to extract foreground and background 
 - Perform quantification on the fluorescent image 
 
 The output phase contrast and fluorescent images can be used in the downstream deep learning models. 
