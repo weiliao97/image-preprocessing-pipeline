@@ -14,4 +14,4 @@ The pipeline here read the ND file and perform
 The output phase contrast and fluorescent images can be used in the downstream deep learning models. 
 
 
-![Phase and FITC](https://drive.google.com/file/d/1jI7Q1g9ZqzGlBrQeBiNkrg-fUpavfDbO/view?usp=sharing)
+
